@@ -25,26 +25,52 @@ class Employee
 
     public void DisplayData()
     {
+        int Cnt = 0, tempSal = Salary;
+        while(tempSal != 0)
+        {
+            tempSal /= 10;
+            Cnt++;
+        }
         
-        if(Address.length() >= 8 && Name.length() >= 8)
+        if(Address.length() >= 8 && Name.length() >= 8 && Cnt >= 8)
         {
             System.out.println(" |\t" + RID + "\t|\t\t" + Name + "\t\t|\t\t" + Salary + "\t\t|\t\t" + Address + "\t\t\t|");
-            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
+        }
+        else if(Address.length() >= 8 && Name.length() >= 8)
+        {
+            System.out.println(" |\t" + RID + "\t|\t\t" + Name + "\t\t|\t\t" + Salary + "\t\t\t|\t\t" + Address + "\t\t\t|");
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
+        }
+        else if(Address.length() >= 8 && Cnt >= 8)
+        {
+            System.out.println(" |\t" + RID + "\t|\t\t" + Name + "\t\t\t|\t\t" + Salary + "\t\t|\t\t" + Address + "\t\t\t|");
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
+        }
+        else if(Cnt >=8 && Name.length() >= 8)
+        {
+            System.out.println(" |\t" + RID + "\t|\t\t" + Name + "\t\t|\t\t" + Salary + "\t\t|\t\t" + Address + "\t\t\t\t|");
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
         }
         else if(Address.length() >= 8)
         {
-            System.out.println(" |\t" + RID + "\t|\t\t" + Name + "\t\t\t|\t\t" + Salary + "\t\t|\t\t" + Address + "\t\t\t|");
-            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println(" |\t" + RID + "\t|\t\t" + Name + "\t\t\t|\t\t" + Salary + "\t\t\t|\t\t" + Address + "\t\t\t|");
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
         }
         else if(Name.length() >= 8)
         {
-            System.out.println(" |\t" + RID + "\t|\t\t" + Name + "\t\t|\t\t" + Salary + "\t\t|\t\t" + Address + "\t\t\t|");
-            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println(" |\t" + RID + "\t|\t\t" + Name + "\t\t|\t\t" + Salary + "\t\t\t|\t\t" + Address + "\t\t\t\t|");
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
+        }
+        else if(Cnt >= 8)
+        {
+            System.out.println(" |\t" + RID + "\t|\t\t" + Name + "\t\t\t|\t\t" + Salary + "\t\t|\t\t" + Address + "\t\t\t\t|");
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
         }
         else
         {
-            System.out.println(" |\t" + RID + "\t|\t\t" + Name + "\t\t\t|\t\t" + Salary + "\t\t|\t\t" + Address + "\t\t\t\t|");
-            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println(" |\t" + RID + "\t|\t\t" + Name + "\t\t\t|\t\t" + Salary + "\t\t\t|\t\t" + Address + "\t\t\t\t|");
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
         }
         
     }
@@ -88,14 +114,14 @@ class DBMS
                     System.out.println("\nInsert Data              :  INSERT INTO Employee values ( Name Salary Address )");
                     System.out.println("Insert Data example      :  INSERT INTO Employee values ( Harsh 1000 Satara )");
                     System.out.println("Insert Data Instruction  :  Please Give a Space after commands same as Above Example");
-                    System.out.println("Display All Data         :  SELECT * FROM Employee");
+                    System.out.println("\nDisplay All Data         :  SELECT * FROM Employee");
                     System.out.println("Display Specific Data    :  SELECT FROM Employee where_condition");
                     System.out.println("Display Specific example :  SELECT FROM Employee WHERE RID = 10");
-                    System.out.println("Update record from table :  UPDATE Employee SET column_name VALUE where_condition");
+                    System.out.println("\nUpdate record from table :  UPDATE Employee SET column_name VALUE where_condition");
                     System.out.println("Update rocord example    :  UPDATE Employee SET Adress = Pune WHERE RID = 1");
-                    System.out.println("Delete Specific Record   :  DELETE FROM Employee where_condition");
+                    System.out.println("\nDelete Specific Record   :  DELETE FROM Employee where_condition");
                     System.out.println("Delete Specific Data eg. :  DELETE FROM Employee WHERE RID = 7");
-                    System.out.println("Exit                     :  Terminate DBMS\n");
+                    System.out.println("\nExit                     :  Terminate DBMS\n");
                 }
                 else if("exit".equals(tokens[0]))
                 {
@@ -114,6 +140,7 @@ class DBMS
             }
             else if(QuerySize == 4)
             {
+                //  Display all of the data
                 if("select".equals(tokens[0]) && "*".equals(tokens[1]) && "from".equals(tokens[2]) && "employee".equals(tokens[3]))
                 {
                     DisplayAll();
@@ -121,6 +148,8 @@ class DBMS
             }
             else if(QuerySize == 7)
             {
+    
+                // Display specific data from employee_table
                 if("select".equals(tokens[0]) && "from".equals(tokens[1]) && "employee".equals(tokens[2]) && "where".equals(tokens[3]))
                 {
                     if("rid".equals(tokens[4]))
@@ -140,10 +169,39 @@ class DBMS
                         DisplaySpecificAdd(tokens[6]);
                     }
                 }
+                // Deleting specific data from dbms
+                else if("delete".equals(tokens[0]))
+                {
+                    if("from".equals(tokens[1]) && "employee".equals(tokens[2]) && "where".equals(tokens[3]))
+                    {
+                        if("rid".equals(tokens[4]))
+                        {
+                            DeleteSpecific(Integer.parseInt(tokens[6]));
+                        }
+                        else if("name".equals(tokens[4]))
+                        {
+                            DeleteSpecific(tokens[6]);
+                        }
+                        else if("salary".equals(tokens[4]))
+                        {
+                            DeleteSpecificSal(Integer.parseInt(tokens[6]));
+                        }
+                        else if("address".equals(tokens[4]))
+                        {
+                            DeleteSpecificAdd(tokens[6]);
+                        }
+                    }
+                    else
+                    {
+                        System.out.println("\nDelete Specific Record   :  DELETE FROM Employee where_condition");
+                        System.out.println("Delete Specific Data eg. :  DELETE FROM Employee WHERE RID = 7");
+                    }
+                }
 
             }
             else if(QuerySize == 9)
             {
+                //  Inserting the data in dbms
                 if("insert".equals(tokens[0]) && "into".equals(tokens[1]) && "employee".equals(tokens[2]) && "values".equals(tokens[3]))
                 {
                     if("(".equals(tokens[4]) && ")".equals(tokens[8]))
@@ -152,12 +210,12 @@ class DBMS
                     }
                     else
                     {
-                        System.out.println("Insert Data example      :  INSERT INTO Employee values ( Harsh , 1000 , Satara )");
+                        System.out.println("\nInsert Data example      :  INSERT INTO Employee values ( Name , Salary , Address )");
+                        System.out.println("Insert Data example      :  INSERT INTO Employee values ( Harshal , 1000 , Satara )");
                         System.out.println("Please Give a Space after after paranthesis & after comms also same as Above Example");
                     }
                 }
             }
-
         }
     }
 
@@ -169,7 +227,7 @@ class DBMS
 
     public void DisplayAll()
     {
-        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
 
         for(Employee eref : lobj)
         {
@@ -179,7 +237,7 @@ class DBMS
 
     public void DisplaySpecific(int rid)
     {
-        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
 
         for(Employee eref : lobj)
         {
@@ -193,7 +251,7 @@ class DBMS
 
     public void DisplaySpecific(String name)
     {
-        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
 
         for(Employee eref : lobj)
         {
@@ -206,7 +264,7 @@ class DBMS
 
     public void DisplaySpecificSal(int salary)
     {
-        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
 
         for(Employee eref : lobj)
         {
@@ -219,13 +277,54 @@ class DBMS
 
     public void DisplaySpecificAdd(String address)
     {
-        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
 
         for(Employee eref : lobj)
         {
             if(address.equals(eref.Address))
             {
                 eref.DisplayData();
+            }
+        }
+    }
+
+    public void DeleteSpecific(int rid)
+    {
+        lobj.remove(rid-1);
+    }
+
+    public void DeleteSpecific(String name)
+    {
+        for(Employee eref : lobj)
+        {
+            if(name.equals(eref.Name))
+            {
+                lobj.remove(eref.RID-1);
+                break;
+            }
+        }
+    }
+    
+    public void DeleteSpecificAdd(String address)
+    {
+        for(Employee eref : lobj)
+        {
+            if(address.equals(eref.Address))
+            {
+                lobj.remove(eref.RID-1);
+                break;
+            }
+        }
+    }
+
+    public void DeleteSpecificSal(int salary)
+    {
+        for(Employee eref : lobj)
+        {
+            if(salary == eref.Salary)
+            {
+                lobj.remove(eref.RID-1);
+                break;
             }
         }
     }
@@ -242,3 +341,22 @@ class CDBMS
 
     }
 }
+
+
+/*
+
+insert into employee values ( Luffy 10000 One_Piece )
+
+insert into employee values ( Zoro 9000 One_Piece )
+
+insert into employee values ( Naruto 7000 Naruto_Shippuden )
+
+insert into employee values ( Araragi 8000 Bakemonogatari )
+
+insert into employee values ( Gintoki 8500 Gintama )
+
+insert into employee values ( Kaguya_Sama 9000 Love_Is_War )
+
+delete from employee where rid = 1
+
+*/
